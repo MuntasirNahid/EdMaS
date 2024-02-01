@@ -1,11 +1,11 @@
 import 'package:edmas/utills/colors.dart';
 import 'package:flutter/material.dart';
 
-class ItemList extends StatelessWidget {
+class FeatureList extends StatelessWidget {
   final String itemName;
   final String imagePath;
   final bool filter;
-  const ItemList({
+  const FeatureList({
     super.key,
     required this.itemName,
     required this.imagePath,
