@@ -1,13 +1,15 @@
+import 'package:edmas/utills/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class ItemList extends StatelessWidget {
   final String itemName;
   final String imagePath;
+  final bool filter;
   const ItemList({
     super.key,
     required this.itemName,
     required this.imagePath,
+    this.filter = false,
   });
 
   @override
@@ -23,11 +25,18 @@ class ItemList extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25),
             ),
-          ),
-          child: SvgPicture.asset(
-            imagePath,
-            height: 40,
-            width: 40,
+            image: DecorationImage(
+              image: AssetImage(
+                imagePath,
+              ),
+              colorFilter: filter
+                  ? ColorFilter.mode(
+                      primaryColor, // Specify the color you want to apply
+                      BlendMode
+                          .modulate, // You can choose a different blend mode if needed
+                    )
+                  : null,
+            ),
           ),
         ),
         const SizedBox(

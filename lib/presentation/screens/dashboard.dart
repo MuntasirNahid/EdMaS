@@ -1,7 +1,6 @@
 import 'package:edmas/presentation/widgets/item_list.dart';
 import 'package:edmas/utills/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class DashBoard extends StatelessWidget {
   const DashBoard({super.key});
@@ -10,8 +9,10 @@ class DashBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(40.0),
+        padding: const EdgeInsets.fromLTRB(40.0, 40.0, 100.0, 40.0),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             //left side all
             Container(
@@ -24,14 +25,28 @@ class DashBoard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // SvgPicture.asset(
-                      //   'assets/images/lock.svg',
+                      //   'assets/images/search_icon.svg',
                       //   width: 135,
                       //   height: 135,
                       // ),
-                      Image(
-                        image: AssetImage('assets/images/login.png'),
-                        width: 135,
-                        height: 135,
+                      Container(
+                        height: 136,
+                        width: 136,
+                        child: Material(
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Image(
+                            image: AssetImage('assets/images/sust.png'),
+                            width: 135,
+                            height: 135,
+                            // fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 05,
                       ),
                       const Text(
                         'CSE STORE MANAGEMENT SYSTEM',
@@ -39,7 +54,7 @@ class DashBoard extends StatelessWidget {
                           color: Colors.black,
                           fontSize: 32,
                           fontFamily: 'Inter',
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
@@ -65,36 +80,37 @@ class DashBoard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           ItemList(
-                            itemName: 'Items List',
-                            imagePath: 'assets/images/lock.svg',
+                            itemName: 'Items list',
+                            imagePath: 'list.png',
                           ),
                           ItemList(
-                            itemName: 'Items List',
-                            imagePath: 'assets/images/lock.svg',
+                            itemName: 'Request',
+                            imagePath: 'req.png',
                           ),
                           ItemList(
-                            itemName: 'Items List',
-                            imagePath: 'assets/images/lock.svg',
+                            itemName: 'Approval',
+                            imagePath: 'approve.png',
                           ),
                           ItemList(
-                            itemName: 'Items List',
-                            imagePath: 'assets/images/lock.svg',
+                            itemName: 'Approve',
+                            imagePath: 'approve2.png',
                           ),
                           ItemList(
-                            itemName: 'Items List',
-                            imagePath: 'assets/images/lock.svg',
+                            itemName: 'Return',
+                            imagePath: 'ret.png',
                           ),
                           ItemList(
-                            itemName: 'Items List',
-                            imagePath: 'assets/images/lock.svg',
+                            itemName: 'Damages',
+                            imagePath: 'dam.png',
                           ),
                           ItemList(
-                            itemName: 'Items List',
-                            imagePath: 'assets/images/lock.svg',
+                            itemName: 'Replace',
+                            imagePath: 'rep.png',
                           ),
                           ItemList(
-                            itemName: 'Items List',
-                            imagePath: 'assets/images/lock.svg',
+                            itemName: 'Fund',
+                            imagePath: 'fund.png',
+                            filter: true,
                           ),
                         ],
                       ),
@@ -132,14 +148,18 @@ class DashBoard extends StatelessWidget {
                             horizontal: 20,
                           ),
                           child: Row(
+                            mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              SvgPicture.asset(
-                                'assets/images/lock.svg',
+                              Image.asset(
+                                'search.png',
+                                width: 25,
+                                height: 25,
+                                fit: BoxFit.cover,
                               ),
                               const SizedBox(
-                                width: 10,
+                                width: 3,
                               ),
                               Expanded(
                                 child: Padding(
@@ -180,7 +200,9 @@ class DashBoard extends StatelessWidget {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 5.0, horizontal: 70.0),
+                            vertical: 5.0,
+                            horizontal: 60.0,
+                          ),
                           child: Row(
                             children: [
                               Text(
@@ -195,8 +217,8 @@ class DashBoard extends StatelessWidget {
                               const SizedBox(
                                 width: 10,
                               ),
-                              SvgPicture.asset(
-                                'assets/images/lock.svg',
+                              Image.asset(
+                                'cart.png',
                                 color: Colors.white,
                               ),
                             ],
@@ -340,13 +362,13 @@ class DashBoard extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                            width: 30,
+                            width: 40,
                           ),
                           Container(
                             width: 100,
                             // color: Colors.blueAccent,
-                            child: SvgPicture.asset(
-                              'assets/images/lock.svg',
+                            child: Image.asset(
+                              'details.png',
                               color: primaryColor,
                               alignment: Alignment.centerRight,
                             ),
@@ -362,8 +384,116 @@ class DashBoard extends StatelessWidget {
               ),
             ),
 
+            const SizedBox(
+              width: 15,
+            ),
+
             //Right side all
-            Container(),
+            Container(
+              width: 350,
+              height: 370,
+              child: Material(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                elevation: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const CircleAvatar(
+                      radius: 70,
+                      backgroundImage: AssetImage(
+                        'nahid.jpg',
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'noti.png',
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Image.asset(
+                          'edit.png',
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      height: 120,
+                      width: 260,
+                      child: Material(
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          side: const BorderSide(
+                            width: 0.4,
+                            color: Color(0x3F000000),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(40, 22, 20, 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    'Name: ',
+                                  ),
+                                  const SizedBox(
+                                    width: 08,
+                                  ),
+                                  Text(
+                                    'Nahid',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 05,
+                              ),
+                              Row(children: [
+                                Text(
+                                  'Role: ',
+                                ),
+                                const SizedBox(
+                                  width: 08,
+                                ),
+                                Text(
+                                  'Store Manager',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: primaryColor,
+                                  ),
+                                ),
+                              ]),
+                              const SizedBox(
+                                height: 05,
+                              ),
+                              Text(
+                                'Dept of CSE',
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

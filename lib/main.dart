@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'EDMAS',
       theme: ThemeData(
         primaryColor: primaryColor,
+        fontFamily: 'Inter',
       ),
       home: const DashBoard(),
     );
