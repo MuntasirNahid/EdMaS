@@ -1,3 +1,4 @@
+import 'package:edmas/presentation/widgets/dashboard/leftside/AddNewItemDialogue.dart';
 import 'package:edmas/utills/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,7 @@ class SearchItemAndAddNewItem extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
-            shadows: [
+            shadows: const [
               BoxShadow(
                 color: Color(0x3F000000),
                 blurRadius: 3,
@@ -89,25 +90,34 @@ class SearchItemAndAddNewItem extends StatelessWidget {
               vertical: 5.0,
               horizontal: 60.0,
             ),
-            child: Row(
-              children: [
-                Text(
-                  'Add new items',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w400,
+            child: GestureDetector(
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AddNewItemDialogue();
+                    });
+              },
+              child: Row(
+                children: [
+                  Text(
+                    'Add new items',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Image.asset(
-                  'cart.png',
-                  color: Colors.white,
-                ),
-              ],
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Image.asset(
+                    'cart.png',
+                    color: Colors.white,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
