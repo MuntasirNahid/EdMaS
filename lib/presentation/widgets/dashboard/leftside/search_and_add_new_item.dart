@@ -1,4 +1,4 @@
-import 'package:edmas/presentation/widgets/dashboard/leftside/AddNewItemDialogue.dart';
+import 'package:edmas/presentation/widgets/dashboard/leftside/Dialogue_Add_New_Item/AddNewItemDialogue.dart';
 import 'package:edmas/utills/colors.dart';
 import 'package:flutter/material.dart';
 

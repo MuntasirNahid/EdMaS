@@ -1,3 +1,4 @@
+import 'package:edmas/presentation/screens/dashboard.dart';
 import 'package:edmas/utills/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -235,6 +236,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           isLoginHovered = false;
                         }),
                         child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const DashBoard(),
+                              ),
+                            );
+                          },
                           child: Center(
                             child: Container(
                               width: 169,

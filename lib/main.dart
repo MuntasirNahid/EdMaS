@@ -1,4 +1,4 @@
-import 'package:edmas/presentation/screens/dashboard.dart';
+import 'package:edmas/presentation/screens/login_screen.dart';
 import 'package:edmas/utills/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         primaryColor: primaryColor,
         fontFamily: 'Inter',
       ),
-      home: const DashBoard(),
+      home: const LoginScreen(),
     );
   }
 }
