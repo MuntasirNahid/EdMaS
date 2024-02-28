@@ -1,5 +1,5 @@
 import 'package:edmas/utills/colors.dart';
-import 'package:edmas/view/screens/signup_screen.dart';
+import 'package:edmas/view/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         primaryColor: primaryColor,
         fontFamily: 'Inter',
       ),
-      home: const SignupScreen(),
+      home: const LoginScreen(),
     );
   }
 }

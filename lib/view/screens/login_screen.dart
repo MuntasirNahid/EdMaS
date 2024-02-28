@@ -1,3 +1,4 @@
+import 'package:edmas/controllers/auth/login_controller.dart';
 import 'package:edmas/utills/colors.dart';
 import 'package:edmas/view/screens/dashboard.dart';
 import 'package:edmas/view/screens/signup_screen.dart';
@@ -19,6 +20,36 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isLoginHovered = false;
   bool isForgotPassHovered = false;
   bool isSignupHovered = false;
+
+  void login() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await LoginController().loginUser(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+    if (res == 'success') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(res),
+        ),
+      );
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) {
+            return const DashBoard();
+          },
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(res),
+        ),
+      );
+    }
+  }
 
   @override
   void dispose() {
@@ -238,13 +269,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           isLoginHovered = false;
                         }),
                         child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => const DashBoard(),
-                              ),
-                            );
-                          },
+                          onTap: login,
                           child: Center(
                             child: Container(
                               width: 169,
@@ -261,15 +286,17 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               child: Align(
                                 alignment: Alignment.center,
-                                child: Text(
-                                  'Log in',
-                                  style: TextStyle(
-                                    color: Color(0xFF6F6F6F),
-                                    fontSize: 16,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
+                                child: _isLoading
+                                    ? CircularProgressIndicator()
+                                    : Text(
+                                        'Log in',
+                                        style: TextStyle(
+                                          color: Color(0xFF6F6F6F),
+                                          fontSize: 16,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
                               ),
                             ),
                           ),

@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:edmas/controllers/auth/signup_controller.dart';
 import 'package:edmas/global/common_widgets/image_picker.dart';
 import 'package:edmas/models/user_model.dart';
-import 'package:edmas/view/screens/dashboard.dart';
 import 'package:edmas/view/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -95,7 +94,7 @@ class _SignupScreenState extends State<SignupScreen> {
 //      showToast("User Registered Successfully", Colors.green);
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const DashBoard(),
+          builder: (context) => const LoginScreen(),
         ),
       );
     }

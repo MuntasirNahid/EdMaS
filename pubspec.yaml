@@ -41,6 +41,7 @@ dependencies:
   fluttertoast:
   path:
   http_parser:
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:

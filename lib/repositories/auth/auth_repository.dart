@@ -5,6 +5,7 @@ import 'package:edmas/global/global.dart';
 import 'package:edmas/models/user_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepository {
   var client = http.Client();
@@ -82,6 +83,34 @@ class AuthRepository {
       }
     } catch (e) {
       print('An Error Occurred and Api call failed, e = ${e.toString()}');
+      return 'An Error Occurred and Api call failed, e = ${e.toString()}';
+    }
+  }
+
+  Future<String> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await client.post(
+        Uri.parse(login_url),
+        body: {
+          'email': email,
+          'password': password,
+        },
+      );
+      if (response.statusCode == 200) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        final responseData = jsonDecode(response.body);
+        final user = UserModel.fromMap(responseData['data']);
+        prefs.setString('token', jsonDecode(response.body)['token']);
+        print('Token: ${jsonDecode(response.body)['token']}');
+        return 'success';
+      } else {
+        return 'An Error Occurred while logging in';
+      }
+    } catch (e) {
       return 'An Error Occurred and Api call failed, e = ${e.toString()}';
     }
   }
