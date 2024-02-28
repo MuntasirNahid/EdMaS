@@ -1,5 +1,5 @@
-import 'package:edmas/presentation/widgets/dashboard/leftside/dashboard_left_side.dart';
-import 'package:edmas/presentation/widgets/dashboard/rightside/dashboard_right_side.dart';
+import 'package:edmas/view/widgets/dashboard/leftside/dashboard_left_side.dart';
+import 'package:edmas/view/widgets/dashboard/rightside/dashboard_right_side.dart';
 import 'package:flutter/material.dart';
 
 class DashBoard extends StatelessWidget {

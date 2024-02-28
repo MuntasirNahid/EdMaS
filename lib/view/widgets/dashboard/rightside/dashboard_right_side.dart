@@ -1,6 +1,6 @@
-import 'package:edmas/presentation/widgets/dashboard/rightside/message_overview.dart';
-import 'package:edmas/presentation/widgets/dashboard/rightside/messages.dart';
-import 'package:edmas/presentation/widgets/dashboard/rightside/user_details.dart';
+import 'package:edmas/view/widgets/dashboard/rightside/message_overview.dart';
+import 'package:edmas/view/widgets/dashboard/rightside/messages.dart';
+import 'package:edmas/view/widgets/dashboard/rightside/user_details.dart';
 import 'package:flutter/material.dart';
 
 class RightSideAll extends StatelessWidget {

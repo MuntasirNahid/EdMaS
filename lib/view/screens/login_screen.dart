@@ -1,5 +1,6 @@
-import 'package:edmas/presentation/screens/dashboard.dart';
 import 'package:edmas/utills/colors.dart';
+import 'package:edmas/view/screens/dashboard.dart';
+import 'package:edmas/view/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -17,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool isLoginHovered = false;
   bool isForgotPassHovered = false;
+  bool isSignupHovered = false;
 
   @override
   void dispose() {
@@ -69,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Container(
                 width: 484,
-                height: 349,
+                height: 369,
                 decoration: ShapeDecoration(
                   color: primaryColor,
                   shape: RoundedRectangleBorder(
@@ -290,6 +292,42 @@ class _LoginScreenState extends State<LoginScreen> {
                               'Forgot your password?',
                               style: TextStyle(
                                 color: isForgotPassHovered
+                                    ? Colors.grey.shade400
+                                    : Colors.white,
+                                fontSize: 16,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 13,
+                      ),
+                      MouseRegion(
+                        onEnter: (_) => setState(() {
+                          isSignupHovered = true;
+                        }),
+                        onExit: (_) => setState(() {
+                          isSignupHovered = false;
+                        }),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const SignupScreen();
+                                },
+                              ),
+                            );
+                          },
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Don\'t have an account? Signup',
+                              style: TextStyle(
+                                color: isSignupHovered
                                     ? Colors.grey.shade400
                                     : Colors.white,
                                 fontSize: 16,

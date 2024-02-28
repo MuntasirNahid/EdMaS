@@ -1,8 +1,8 @@
-import 'package:edmas/presentation/widgets/dashboard/leftside/features.dart';
-import 'package:edmas/presentation/widgets/dashboard/leftside/search_and_add_new_item.dart';
-import 'package:edmas/presentation/widgets/dashboard/leftside/sust_logo_text.dart';
-import 'package:edmas/presentation/widgets/dashboard/leftside/table_elements.dart';
-import 'package:edmas/presentation/widgets/dashboard/leftside/table_title.dart';
+import 'package:edmas/view/widgets/dashboard/leftside/features.dart';
+import 'package:edmas/view/widgets/dashboard/leftside/search_and_add_new_item.dart';
+import 'package:edmas/view/widgets/dashboard/leftside/sust_logo_text.dart';
+import 'package:edmas/view/widgets/dashboard/leftside/table_elements.dart';
+import 'package:edmas/view/widgets/dashboard/leftside/table_title.dart';
 import 'package:flutter/material.dart';
 
 class LeftSideAll extends StatelessWidget {

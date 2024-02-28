@@ -1,5 +1,5 @@
-import 'package:edmas/presentation/widgets/dashboard/leftside/feature_list.dart';
 import 'package:edmas/utills/colors.dart';
+import 'package:edmas/view/widgets/dashboard/leftside/feature_list.dart';
 import 'package:flutter/material.dart';
 
 class Features extends StatelessWidget {

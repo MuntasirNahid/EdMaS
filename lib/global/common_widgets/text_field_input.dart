@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class TextFieldInput extends StatelessWidget {
   final TextEditingController textEditingController;
   final bool isPass;
   final String hintText;
   final TextInputType textInputType;
-  final String icon;
+  final IconData icon;
 
   const TextFieldInput({
     super.key,
@@ -20,10 +19,10 @@ class TextFieldInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 333,
-      height: 52,
+      width: double.infinity,
+      height: 702,
       decoration: ShapeDecoration(
-        color: Colors.white,
+        color: Colors.black,
         shape: RoundedRectangleBorder(
           side: const BorderSide(width: 0.50, color: Color(0xFF6F6F6F)),
           borderRadius: BorderRadius.circular(5),
@@ -35,8 +34,8 @@ class TextFieldInput extends StatelessWidget {
           Container(
             width: 55,
             height: 52,
-            decoration: ShapeDecoration(
-              color: Colors.white,
+            decoration: const ShapeDecoration(
+              color: Colors.black,
               shape: RoundedRectangleBorder(
                 side: BorderSide(width: 0.50, color: Color(0xFF6F6F6F)),
                 borderRadius: BorderRadius.only(
@@ -46,7 +45,7 @@ class TextFieldInput extends StatelessWidget {
               ),
             ),
             child: Center(
-              child: SvgPicture.asset(icon),
+              child: Icon(icon),
             ),
           ),
           TextField(
