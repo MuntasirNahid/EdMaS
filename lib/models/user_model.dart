@@ -4,7 +4,7 @@ class UserModel {
   final String email;
   final String role;
   final String about;
-  final String password;
+  String password;
   String dp;
 
   UserModel({
@@ -13,7 +13,7 @@ class UserModel {
     required this.email,
     required this.role,
     required this.about,
-    required this.password,
+    this.password = '',
     this.dp = '',
   });
 
@@ -35,7 +35,6 @@ class UserModel {
       email: map['email'] as String,
       role: map['role'] as String,
       about: map['about'] as String,
-      password: map['password'] as String,
       dp: map['dp'] as String,
     );
   }
@@ -47,7 +46,6 @@ class UserModel {
       "email": this.email,
       "role": this.role,
       "about": this.about,
-      "password": this.password,
       "dp": this.dp,
     };
   }

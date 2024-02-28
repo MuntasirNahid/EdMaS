@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:edmas/global/global.dart';
 import 'package:edmas/models/user_model.dart';
@@ -12,7 +12,7 @@ class AuthRepository {
   Future<String> signUpUser({
     required UserModel userModel,
     required String confirmPassword,
-    required File dp,
+    required Uint8List dp,
     required String imageExtension,
   }) async {
     try {
@@ -41,23 +41,29 @@ class AuthRepository {
       request.fields['password'] = userModel.password;
       request.fields['confirmPassword'] = confirmPassword;
 
-      // var file = http.MultipartFile.fromBytes(
-      //   'dp',
-      //   dp,
-      //   filename: 'user_dp.${userModel.dpExtension}',
-      //   contentType: MediaType('image', userModel.dpExtension),
-      // );
-      var file = await http.MultipartFile.fromPath(
+      var file = http.MultipartFile.fromBytes(
         'dp',
-        dp.path,
+        dp,
         filename: '${userModel.name}_dp.$imageExtension',
         contentType: MediaType('image', imageExtension),
       );
+
       request.files.add(file);
 
       //request.files.add(file);
 
       var response = await request.send();
+      // final responseData = await response.stream.bytesToString();
+      //
+      // final decodeResponse = jsonDecode(responseData);
+      // print('printing decode response');
+      //
+      // print(decodeResponse['data'].toString());
+      //
+      // final user = UserModel.fromMap(decodeResponse['data']);
+      //
+      // print(user.name);
+      // print(user.id);
 
       print('{Hello we got status code: ${response.statusCode}}');
 
@@ -75,6 +81,7 @@ class AuthRepository {
         return 'An Error Occurred while registering user';
       }
     } catch (e) {
+      print('An Error Occurred and Api call failed, e = ${e.toString()}');
       return 'An Error Occurred and Api call failed, e = ${e.toString()}';
     }
   }

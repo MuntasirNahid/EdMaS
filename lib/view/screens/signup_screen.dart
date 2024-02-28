@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:edmas/controllers/auth/signup_controller.dart';
 import 'package:edmas/global/common_widgets/image_picker.dart';
@@ -7,7 +7,6 @@ import 'package:edmas/view/screens/dashboard.dart';
 import 'package:edmas/view/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as path;
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -28,24 +27,31 @@ class _SignupScreenState extends State<SignupScreen> {
   String? _imageExtension;
 
   bool _isLoading = false;
+  //
+  // PickedFile _image = PickedFile('');
+  // File imageFile = File('');
+  Uint8List? _image;
 
-  PickedFile _image = PickedFile('');
-  File imageFile = File('');
-
+  // void selectImage() async {
+  //   PickedFile pickedFile = await pickImage(ImageSource.gallery);
+  //   setState(() {
+  //     _image = pickedFile;
+  //     String extension = path.extension(pickedFile.path);
+  //     _imageExtension = extension.replaceAll('.', '');
+  //   });
+  // }
   void selectImage() async {
-    PickedFile pickedFile = await pickImage(ImageSource.gallery);
+    Uint8List im = await pickImage(ImageSource.gallery);
     setState(() {
-      _image = pickedFile;
-      String extension = path.extension(pickedFile.path);
-      _imageExtension = extension.replaceAll('.', '');
+      _image = im;
     });
   }
 
-  // Function to convert PickedFile to File
-  File convertPickedFileToFile(PickedFile pickedFile) {
-    File file = File(pickedFile.path);
-    return file;
-  }
+  // // Function to convert PickedFile to File
+  // File convertPickedFileToFile(PickedFile pickedFile) {
+  //   File file = File(pickedFile.path);
+  //   return file;
+  // }
 
   void signupUser() async {
     setState(() {
@@ -58,13 +64,13 @@ class _SignupScreenState extends State<SignupScreen> {
       about: _bioController.text,
       password: _passwordController.text,
     );
-    imageFile = convertPickedFileToFile(_image);
+    //  imageFile = convertPickedFileToFile(_image);
 
     String res = await SignUpController().signUpUser(
       userModel: userModel,
       confirmPassword: _confirmPasswordController.text,
-      dp: imageFile,
-      imageExtension: _imageExtension!,
+      dp: _image!,
+      imageExtension: 'jpeg',
     );
 
     setState(() {
@@ -124,7 +130,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   _image != null
                       ? CircleAvatar(
                           radius: 64,
-                          backgroundImage: FileImage(imageFile),
+                          backgroundImage: MemoryImage(
+                            _image!,
+                          ),
                         )
                       : const CircleAvatar(
                           radius: 64,

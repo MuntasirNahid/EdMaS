@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:edmas/models/user_model.dart';
 import 'package:edmas/repositories/auth/auth_repository.dart';
@@ -9,7 +9,7 @@ class SignUpController {
   Future<String> signUpUser({
     required UserModel userModel,
     required String confirmPassword,
-    required File dp,
+    required Uint8List dp,
     required String imageExtension,
   }) async {
     String res = await _authRepository.signUpUser(
