@@ -2,10 +2,17 @@ import 'package:edmas/utills/colors.dart';
 import 'package:flutter/material.dart';
 
 class TableElements extends StatelessWidget {
+  final int id;
+  final String productName;
+  final int quantity;
   const TableElements({
     super.key,
+    required this.id,
+    required this.productName,
+    required this.quantity,
   });
 
+  @override
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -14,7 +21,7 @@ class TableElements extends StatelessWidget {
       decoration: ShapeDecoration(
         color: Colors.white,
         shape: RoundedRectangleBorder(
-          side: BorderSide(
+          side: const BorderSide(
             width: 1,
             strokeAlign: BorderSide.strokeAlignCenter,
             color: primaryColor,
@@ -31,7 +38,7 @@ class TableElements extends StatelessWidget {
               width: 150,
               //color: Colors.blueAccent,
               child: Text(
-                'ID: 01',
+                ' $id',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Inter',
@@ -47,7 +54,7 @@ class TableElements extends StatelessWidget {
               width: 500,
               //    color: Colors.blueAccent,
               child: Text(
-                'Product 1',
+                '$productName',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Inter',
@@ -64,7 +71,7 @@ class TableElements extends StatelessWidget {
               width: 150,
               //color: Colors.blueAccent,
               child: Text(
-                '08',
+                '$quantity',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Inter',

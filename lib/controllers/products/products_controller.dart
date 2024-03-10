@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:edmas/models/product_model.dart';
 import 'package:edmas/repositories/products/api_service.dart';
 import 'package:edmas/utills/logger.dart';
@@ -12,10 +14,25 @@ class ProductsController {
     try {
       return ProductApiService().fetchProducts().then((response) {
         if (response.statusCode == 200) {
-          _logger.success('Products fetched successfully');
-          //will do fetching operation here. now going to class
+          var jsonResponse = jsonDecode(response.body);
+          _logger.success(
+              'Products fetched successfully: ${jsonResponse['message']}');
+
+          var jsonData = jsonResponse['data'];
+
+          _logger.success('Products: ${jsonData.length}');
+          _logger.success('Products: ${jsonData}');
+
+          List<ProductModel> products = (jsonData as List).map(
+            (product) {
+              return ProductModel.fromJson(product);
+            },
+          ).toList();
+
+          return products;
         } else {
-          _logger.error('Failed to fetch products');
+          _logger.error(
+              'Failed to fetch products,status code: ${response.statusCode} ');
           return Future.error('Failed to fetch products');
         }
       });
