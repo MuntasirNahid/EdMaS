@@ -32,13 +32,13 @@ class AuthRepository {
       // );
       var uri = Uri.parse(register_url);
 
-      ///edi shob korte hoitese karon postman a raw type na. form-data type.erliga
+      ///egula shob korte hoitese karon postman a raw type na. form-data type.
       var request = http.MultipartRequest('POST', uri);
 
       request.fields['name'] = userModel.name;
       request.fields['email'] = userModel.email;
       request.fields['role'] = userModel.role;
-      request.fields['about'] = userModel.about;
+
       request.fields['password'] = userModel.password;
       request.fields['confirmPassword'] = confirmPassword;
 

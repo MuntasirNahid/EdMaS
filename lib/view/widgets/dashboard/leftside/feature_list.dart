@@ -5,11 +5,13 @@ class FeatureList extends StatelessWidget {
   final String itemName;
   final String imagePath;
   final bool filter;
+  final VoidCallback onTap;
   const FeatureList({
     super.key,
     required this.itemName,
     required this.imagePath,
     this.filter = false,
+    required this.onTap,
   });
 
   @override
@@ -17,25 +19,28 @@ class FeatureList extends StatelessWidget {
     return Column(
       //   mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Container(
-          width: 60,
-          height: 60,
-          decoration: ShapeDecoration(
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-            ),
-            image: DecorationImage(
-              image: AssetImage(
-                imagePath,
+        GestureDetector(
+          onTap: onTap,
+          child: Container(
+            width: 60,
+            height: 60,
+            decoration: ShapeDecoration(
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25),
               ),
-              colorFilter: filter
-                  ? ColorFilter.mode(
-                      primaryColor, // Specify the color you want to apply
-                      BlendMode
-                          .modulate, // You can choose a different blend mode if needed
-                    )
-                  : null,
+              image: DecorationImage(
+                image: AssetImage(
+                  imagePath,
+                ),
+                colorFilter: filter
+                    ? ColorFilter.mode(
+                        primaryColor, // Specify the color you want to apply
+                        BlendMode
+                            .modulate, // You can choose a different blend mode if needed
+                      )
+                    : null,
+              ),
             ),
           ),
         ),

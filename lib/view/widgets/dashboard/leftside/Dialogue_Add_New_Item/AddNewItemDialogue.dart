@@ -1,5 +1,9 @@
+import 'dart:typed_data';
+
+import 'package:edmas/global/common_widgets/image_picker.dart';
 import 'package:edmas/utills/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddNewItemDialogue extends StatefulWidget {
   const AddNewItemDialogue({super.key});
@@ -9,6 +13,33 @@ class AddNewItemDialogue extends StatefulWidget {
 }
 
 class _AddNewItemDialogueState extends State<AddNewItemDialogue> {
+  // Uint8List image = Uint8List(0);
+  //
+  // Future pickImage(ImageSource source) async {
+  //   try {
+  //     final image = await ImagePicker().pickImage(source: source);
+  //     if (image == null) return;
+  //     // final imageTemporary = File(image.path);
+  //     final imagePermanent = await image.readAsBytes();
+  //
+  //     setState(() {
+  //       this.image = imagePermanent;
+  //     });
+  //   } on Exception catch (e) {
+  //     // TODO
+  //     print('Failed to pick image:$e');
+  //   }
+  // }
+
+  Uint8List? _image;
+
+  void selectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = im;
+    });
+  }
+
   var _dropdownValue = "Electronics";
   void dropDownCallback(String? selectedValue) {
     if (selectedValue is String) {
@@ -225,13 +256,26 @@ class _AddNewItemDialogueState extends State<AddNewItemDialogue> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.add_a_photo_outlined,
-                              size: 40,
-                              color: Colors.grey,
-                            ),
-                          ),
+                          child: StatefulBuilder(builder:
+                              (BuildContext context, StateSetter setState) {
+                            return Center(
+                              child: GestureDetector(
+                                onTap: () {
+                                  selectImage();
+                                },
+                                child: _image != null
+                                    ? Image.memory(
+                                        _image!,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : const Icon(
+                                        Icons.add_a_photo_outlined,
+                                        size: 40,
+                                        color: Colors.grey,
+                                      ),
+                              ),
+                            );
+                          }),
                         ),
                       )
                     ],

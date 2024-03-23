@@ -1,11 +1,11 @@
-import 'package:edmas/controllers/products/products_controller.dart';
-import 'package:edmas/models/product_model.dart';
+import 'package:edmas/view/screens/bloc/dashboard_bloc.dart';
 import 'package:edmas/view/widgets/dashboard/leftside/features.dart';
 import 'package:edmas/view/widgets/dashboard/leftside/search_and_add_new_item.dart';
 import 'package:edmas/view/widgets/dashboard/leftside/sust_logo_text.dart';
 import 'package:edmas/view/widgets/dashboard/leftside/table_elements.dart';
 import 'package:edmas/view/widgets/dashboard/leftside/table_title.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LeftSideAll extends StatefulWidget {
   const LeftSideAll({
@@ -21,19 +21,23 @@ class _LeftSideAllState extends State<LeftSideAll> {
 
   @override
   void initState() {
-    fetchProducts();
+    dashboardBloc.add(DashboardInitialEvent());
+    //  fetchProducts();
     super.initState();
   }
 
-  List<ProductModel> productsList = [];
+  final DashboardBloc dashboardBloc = DashboardBloc();
 
-  Future<void> fetchProducts() async {
-    final products = await ProductsController().fetchProductList();
-    setState(() {
-      productsList = products;
-      isProductsLoaded = true;
-    });
-  }
+  //egula shob bloc er er vitore hobe
+  // List<ProductModel> productsList = [];
+  //
+  // Future<void> fetchProducts() async {
+  //   final products = await ProductsController().fetchProductList();
+  //   setState(() {
+  //     productsList = products;
+  //     isProductsLoaded = true;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -76,47 +80,70 @@ class _LeftSideAllState extends State<LeftSideAll> {
 
           ///Table Elements
 
-          Expanded(
-            child: Container(
-              width: 1200,
-              height: 400,
-              child: isProductsLoaded
-                  ? ListView.separated(
-                      itemCount: productsList.length,
-                      separatorBuilder: (context, index) => const SizedBox(
-                        height: 10,
-                      ),
-                      itemBuilder: (context, index) {
-                        final product = productsList[index];
-                        return TableElements(
-                          id: index + 1,
-                          productName: product.name,
-                          quantity: product.quantity,
-                        );
-                      },
-                    )
-                  : const LinearProgressIndicator(),
-            ),
+          BlocConsumer(
+            bloc: dashboardBloc,
+            listener: (context, state) {},
+            builder: (context, state) {
+              if (state is DashboardInitial) {
+                return Expanded(
+                  child: ListView.separated(
+                    itemBuilder: (context, index) {
+                      return TableElements(
+                          id: index + 1, productName: "MAC", quantity: 5);
+                    },
+                    itemCount: 3,
+                    separatorBuilder: (context, index) => const SizedBox(
+                      height: 10,
+                    ),
+                  ),
+                );
+
+                // Expanded(
+                // child: Container(
+                //   width: 1200,
+                //   height: 400,
+                //   child: isProductsLoaded
+                //       ? ListView.separated(
+                //           itemCount: productsList.length,
+                //           separatorBuilder: (context, index) => const SizedBox(
+                //             height: 10,
+                //           ),
+                //           itemBuilder: (context, index) {
+                //             final product = productsList[index];
+                //             return TableElements(
+                //               id: index + 1,
+                //               productName: product.name,
+                //               quantity: product.quantity,
+                //             );
+                //           },
+                //         )
+                //       : const LinearProgressIndicator(),
+                // ),
+              }
+              if (state is DashboardRequestState) {
+                return Container();
+              }
+              if (state is DashboardApprovalState) {
+                return Container();
+              }
+              if (state is DashboardApproveState) {
+                return Container();
+              }
+              if (state is DashboardReturnState) {
+                return Container();
+              }
+              if (state is DashboardDamagesState) {
+                return Container();
+              }
+              if (state is DashboardReplacementState) {
+                return Container();
+              }
+              if (state is DashboardFundState) {
+                return Container();
+              }
+              return Container();
+            },
           )
-
-          // child: ListView.separated(
-          //   //itemCount: productsList.length,
-          //   itemCount: 2,
-          //   separatorBuilder: (context, index) => const SizedBox(
-          //     height: 10,
-          //   ),
-          //   itemBuilder: (context, index) {
-          //     return TableElements(
-          //       id: index,
-          //       productName: productsList[index].name,
-          //       // quantity: productsList[index].quantity,
-          //       // productName: "Nahid",
-          //       quantity: 2,
-          //     );
-          //   },
-          // ),
-
-          //
         ],
       ),
     );
