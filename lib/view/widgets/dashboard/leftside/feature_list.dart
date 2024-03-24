@@ -16,12 +16,12 @@ class FeatureList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        GestureDetector(
-          onTap: onTap,
-          child: Container(
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Container(
             width: 60,
             height: 60,
             decoration: ShapeDecoration(
@@ -35,29 +35,28 @@ class FeatureList extends StatelessWidget {
                 ),
                 colorFilter: filter
                     ? ColorFilter.mode(
-                        primaryColor, // Specify the color you want to apply
-                        BlendMode
-                            .modulate, // You can choose a different blend mode if needed
+                        primaryColor,
+                        BlendMode.modulate,
                       )
                     : null,
               ),
             ),
           ),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        Text(
-          itemName,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            fontFamily: 'Inter',
-            height: 0,
+          const SizedBox(
+            height: 20,
           ),
-        )
-      ],
+          Text(
+            itemName,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              fontFamily: 'Inter',
+              height: 0,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

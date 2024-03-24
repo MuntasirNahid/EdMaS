@@ -3,7 +3,7 @@ part of 'dashboard_bloc.dart';
 @immutable
 abstract class DashboardEvent {}
 
-class DashboardInitialEvent extends DashboardEvent {}
+class DashboardItemListEvent extends DashboardEvent {}
 
 class DashboardRequestEvent extends DashboardEvent {}
 

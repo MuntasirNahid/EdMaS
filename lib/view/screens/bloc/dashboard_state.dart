@@ -5,10 +5,12 @@ abstract class DashboardState {}
 
 class DashboardInitial extends DashboardState {}
 
-class DashboardInitialState extends DashboardState {
-  final List<ProductModel> productList;
+class DashboardItemListLoading extends DashboardState {}
 
-  DashboardInitialState({required this.productList});
+class DashboardItemListState extends DashboardState {
+  // final List<ProductModel> productList;
+  //
+  // DashboardItemListState({required this.productList});
 }
 
 class DashboardRequestState extends DashboardState {}

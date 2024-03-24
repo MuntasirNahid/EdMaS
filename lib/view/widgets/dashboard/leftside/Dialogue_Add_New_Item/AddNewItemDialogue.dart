@@ -67,6 +67,12 @@ class _AddNewItemDialogueState extends State<AddNewItemDialogue> {
         width: 1150.0,
         height: 770.0,
         padding: const EdgeInsets.fromLTRB(50, 30, 50, 15),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
         child: Column(
           children: [
             Row(

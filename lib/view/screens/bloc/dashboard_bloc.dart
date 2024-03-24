@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:edmas/controllers/products/products_controller.dart';
-import 'package:edmas/models/product_model.dart';
 import 'package:meta/meta.dart';
 
 part 'dashboard_event.dart';
@@ -10,7 +8,7 @@ part 'dashboard_state.dart';
 
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardBloc() : super(DashboardInitial()) {
-    on<DashboardInitialEvent>(_onDashboardInitialEvent);
+    on<DashboardItemListEvent>(_onDashboardItemListEvent);
     on<DashboardRequestEvent>(_onDashboardRequestEvent);
     on<DashboardApprovalEvent>(_onDashboardApprovalEvent);
     on<DashboardApproveEvent>(_onDashboardApproveEvent);
@@ -20,21 +18,30 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     on<DashboardFundEvent>(_onDashboardFundEvent);
   }
 
-  FutureOr<void> _onDashboardInitialEvent(
-      DashboardInitialEvent event, Emitter<DashboardState> emit) async {
+  FutureOr<void> _onDashboardItemListEvent(
+      DashboardItemListEvent event, Emitter<DashboardState> emit) async {
     //will fetch data from controller here.
     //then will pass it to the UI
 
-    final List<ProductModel> productList =
-        await ProductsController().fetchProductList();
-    emit(DashboardInitialState(
-      productList: productList,
-    ));
+    //emit(DashboardItemListLoading());
+
+    //
+    // final List<ProductModel> productList =
+    //     await ProductsController().fetchProductList();
+    // emit(DashboardItemListState(
+    //   productList: productList,
+    // ));
+
+    emit(DashboardItemListState());
   }
 
   FutureOr<void> _onDashboardRequestEvent(
-      DashboardRequestEvent event, Emitter<DashboardState> emit) {
-    emit(DashboardRequestState());
+    DashboardRequestEvent event,
+    Emitter<DashboardState> emit,
+  ) {
+    emit(
+      DashboardRequestState(),
+    );
   }
 
   FutureOr<void> _onDashboardApprovalEvent(
