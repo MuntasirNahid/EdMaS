@@ -24,7 +24,9 @@ class ProductModel {
       quantity: json['quantity'],
       image: json['image'],
       locationId: json['locationId'],
-      location: LocationModel.fromJson(json['location']),
+      location: LocationModel.fromJson(
+        json['location'],
+      ),
     );
   }
 }

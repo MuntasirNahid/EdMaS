@@ -105,6 +105,9 @@ class AuthRepository {
         final responseData = jsonDecode(response.body);
         final user = UserModel.fromMap(responseData['data']);
         prefs.setString('token', jsonDecode(response.body)['token']);
+
+        prefs.setString('user_role', user.role);
+        print('User Role: ${user.role}');
         print('Token: ${jsonDecode(response.body)['token']}');
         return 'success';
       } else {

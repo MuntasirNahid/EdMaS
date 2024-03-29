@@ -1,6 +1,11 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
+import 'package:edmas/controllers/products/products_controller.dart';
+import 'package:edmas/models/location_model.dart';
+import 'package:edmas/models/product_model.dart';
+import 'package:edmas/utills/logger.dart';
 import 'package:meta/meta.dart';
 
 part 'dashboard_event.dart';
@@ -16,23 +21,31 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     on<DashboardDamagesEvent>(_onDashboardDamagesEvent);
     on<DashboardReplacementEvent>(_onDashboardReplacementEvent);
     on<DashboardFundEvent>(_onDashboardFundEvent);
+    on<DashboardAddNewItemEvent>(_onDashboardAddNewItemEvent);
+    on<DashboardGetAllShelfEvent>(_onDashboardGetAllShelfEvent);
+    on<DashboardSingleProductDetailsEvent>(
+        _onDashboardSingleProductDetailsEvent);
+    on<DashboardApplicationDetailsEvent>(_onDashboardApplicationDetailsEvent);
   }
+
+  final Logger _logger = Logger.getLogger((DashboardBloc).toString());
 
   FutureOr<void> _onDashboardItemListEvent(
       DashboardItemListEvent event, Emitter<DashboardState> emit) async {
     //will fetch data from controller here.
     //then will pass it to the UI
 
-    //emit(DashboardItemListLoading());
+    emit(DashboardItemListLoadingState());
 
     //
-    // final List<ProductModel> productList =
-    //     await ProductsController().fetchProductList();
-    // emit(DashboardItemListState(
-    //   productList: productList,
-    // ));
+    final List<ProductModel> productList =
+        await ProductsController().fetchProductList();
 
-    emit(DashboardItemListState());
+    emit(
+      DashboardItemListState(
+        productList: productList,
+      ),
+    );
   }
 
   FutureOr<void> _onDashboardRequestEvent(
@@ -72,5 +85,49 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   FutureOr<void> _onDashboardFundEvent(
       DashboardFundEvent event, Emitter<DashboardState> emit) {
     emit(DashboardFundState());
+  }
+
+  FutureOr<void> _onDashboardAddNewItemEvent(
+      DashboardAddNewItemEvent event, Emitter<DashboardState> emit) async {
+    final String response = await ProductsController().addProduct(
+      image: event.image,
+      name: event.itemName,
+      location: event.location,
+      quantity: event.itemQuantity,
+    );
+
+    _logger.debug(response.toString());
+
+    emit(DashboardAddNewItemState(response: response));
+  }
+
+  FutureOr<void> _onDashboardGetAllShelfEvent(
+      DashboardGetAllShelfEvent event, Emitter<DashboardState> emit) async {
+    emit(DashboardGetAllShelfLoadingState());
+    final List<LocationModel> shelfList =
+        await ProductsController().getAllShelf();
+    emit(DashboardGetAllShelfState(shelfList: shelfList));
+  }
+
+  FutureOr<void> _onDashboardSingleProductDetailsEvent(
+      DashboardSingleProductDetailsEvent event,
+      Emitter<DashboardState> emit) async {
+    emit(DashboardSingleProductDetailsLoadingState());
+
+    final ProductModel product;
+
+    product = await ProductsController()
+        .getSingleProductDetails(productId: event.productId);
+
+    emit(
+      DashboardSingleProductDetailsFetchedState(
+        product: product,
+      ),
+    );
+  }
+
+  FutureOr<void> _onDashboardApplicationDetailsEvent(
+      DashboardApplicationDetailsEvent event, Emitter<DashboardState> emit) {
+    emit(DashboardApplicationDetailsState());
   }
 }

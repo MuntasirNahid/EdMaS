@@ -10,8 +10,8 @@ class ApplicationApproval extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        width: 1200,
-        height: 300,
+        width: 1100,
+        height: 500,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),

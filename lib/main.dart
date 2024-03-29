@@ -2,6 +2,7 @@ import 'package:edmas/utills/bloc_observer.dart';
 import 'package:edmas/utills/colors.dart';
 import 'package:edmas/view/screens/bloc/dashboard_bloc.dart';
 import 'package:edmas/view/screens/dashboard.dart';
+import 'package:edmas/view/screens/login_screen.dart';
 import 'package:edmas/view/widgets/dashboard/leftside/dashboard_left_side.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,26 +40,24 @@ class MyApp extends StatelessWidget {
           primaryColor: primaryColor,
           fontFamily: 'Inter',
         ),
-        home: const DashBoard(),
-        //
-        // FutureBuilder<bool>(
-        //   future: isTokenAvailable(),
-        //   builder: (context, snapshot) {
-        //     if (snapshot.hasData) {
-        //       if (snapshot.data == true) {
-        //         return const DashBoard();
-        //       } else {
-        //         return SignupScreen();
-        //       }
-        //     } else {
-        //       return const Scaffold(
-        //         body: Center(
-        //           child: CircularProgressIndicator(),
-        //         ),
-        //       );
-        //     }
-        //   },
-        // ),
+        home: FutureBuilder<bool>(
+          future: isTokenAvailable(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data == true) {
+                return const DashBoard();
+              } else {
+                return const LoginScreen();
+              }
+            } else {
+              return const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }

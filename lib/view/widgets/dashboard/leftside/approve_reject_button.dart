@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 class ApproveRejectButton extends StatelessWidget {
   const ApproveRejectButton({
     super.key,
+    this.isApproval,
   });
+  final bool? isApproval;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,9 @@ class ApproveRejectButton extends StatelessWidget {
               )
             ],
           ),
-          child: Center(child: Text("Approve")),
+          child: Center(
+            child: isApproval != null ? Text("Forward") : Text("Approve"),
+          ),
         ),
         const SizedBox(
           width: 15,

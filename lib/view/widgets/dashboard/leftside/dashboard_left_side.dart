@@ -1,10 +1,7 @@
 import 'package:edmas/view/screens/bloc/dashboard_bloc.dart';
 import 'package:edmas/view/screens/product_details.dart';
 import 'package:edmas/view/widgets/dashboard/leftside/add_amount_expense.dart';
-import 'package:edmas/view/widgets/dashboard/leftside/application_approval.dart';
 import 'package:edmas/view/widgets/dashboard/leftside/application_formField.dart';
-import 'package:edmas/view/widgets/dashboard/leftside/approval_item_info.dart';
-import 'package:edmas/view/widgets/dashboard/leftside/approve_reject_button.dart';
 import 'package:edmas/view/widgets/dashboard/leftside/approved_item_info.dart';
 import 'package:edmas/view/widgets/dashboard/leftside/features.dart';
 import 'package:edmas/view/widgets/dashboard/leftside/fund_overview.dart';
@@ -17,6 +14,7 @@ import 'package:edmas/view/widgets/dashboard/leftside/table_elements.dart';
 import 'package:edmas/view/widgets/dashboard/leftside/table_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LeftSideAll extends StatefulWidget {
   const LeftSideAll({
@@ -33,8 +31,12 @@ class _LeftSideAllState extends State<LeftSideAll> {
 
   @override
   void initState() {
-    dashboardBloc.add(DashboardItemListEvent());
+    //  dashboardBloc.add(DashboardItemListEvent());
+    BlocProvider.of<DashboardBloc>(context).add(
+      DashboardItemListEvent(),
+    );
     //  fetchProducts();
+    initThings();
     super.initState();
   }
 
@@ -48,6 +50,12 @@ class _LeftSideAllState extends State<LeftSideAll> {
   //     isProductsLoaded = true;
   //   });
   // }
+
+  String userRole = "";
+  void initThings() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userRole = prefs.getString('user_role')!;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,8 +82,22 @@ class _LeftSideAllState extends State<LeftSideAll> {
                 height: 35,
               ),
 
+              ///DashboardItemList Fetching from Db
+
+              if (state is DashboardItemListLoadingState)
+                Center(
+                  child: Container(
+                    height: 50,
+                    width: 50,
+                    child: CircularProgressIndicator(
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+
               ///Search Item and Add new item
-              if (state is DashboardItemListState)
+              if ((userRole == "store_manager" || userRole == "dept_head") &&
+                  state is DashboardItemListState)
                 const SearchItemAndAddNewItem(),
 
               ///Request
@@ -101,7 +123,12 @@ class _LeftSideAllState extends State<LeftSideAll> {
               if (state is DashboardFundState) const Fund_overview(),
 
               ///Approval Info
-              if (state is DashboardApprovalState) const ApprovalItemInfo(),
+              //   if (state is DashboardApprovalState) const ApprovalItemInfo(),
+              // First show the list of application in sorted order
+              if (state is DashboardApprovalState)
+                const ApprovedItemInfo(
+                  isApproval: true,
+                ),
 
               const SizedBox(
                 height: 30,
@@ -111,11 +138,12 @@ class _LeftSideAllState extends State<LeftSideAll> {
               if (state is DashboardFundState) AddExpenseAmount(),
 
               ///Title's of table
-              if (state is DashboardItemListState) TableTitle(),
+              if ((userRole == "store_manager" || userRole == "dept_head") &&
+                  state is DashboardItemListState)
+                TableTitle(),
 
               if (state is DashboardItemListState ||
-                  state is DashboardRequestState ||
-                  state is DashboardApprovalState)
+                  state is DashboardRequestState)
                 const Divider(
                   height: 10,
                   thickness: 0.5,
@@ -133,13 +161,42 @@ class _LeftSideAllState extends State<LeftSideAll> {
 
               ///Application Approval Overview
 
-              if (state is DashboardApprovalState) ApplicationApproval(),
+              //  if (state is DashboardApprovalState) ApplicationApproval(),
 
               ///Approve or Reject Button for Approval
-              if (state is DashboardApprovalState) ApproveRejectButton(),
+              //   if (state is DashboardApprovalState) ApproveRejectButton(),
 
               ///Application FormField
               if (state is DashboardRequestState) ApplicationFormField(),
+
+              ///DashboardItemList Fetching from Db
+
+              if (state is DashboardItemListLoadingState)
+                Center(
+                  child: Container(
+                    height: 50,
+                    width: 50,
+                    child: CircularProgressIndicator(
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+
+              ///Add new Item confirmation message dialogue
+              if ((userRole == "store_manager" || userRole == "dept_head") &&
+                  state is DashboardAddNewItemState)
+                AlertDialog(
+                  title: const Text('Confirmation'),
+                  content: Text(state.response),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                ),
 
               ///Item Table Elements
               if (state is DashboardItemListState)
@@ -150,17 +207,18 @@ class _LeftSideAllState extends State<LeftSideAll> {
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  const ProductDetailsScreen(),
+                              builder: (context) => ProductDetailsScreen(
+                                productId: state.productList[index].id,
+                              ),
                             ),
                           );
                         },
                         id: index + 1,
-                        productName: "MAC",
-                        quantity: 5,
+                        productName: state.productList[index].name,
+                        quantity: state.productList[index].quantity,
                       );
                     },
-                    itemCount: 3,
+                    itemCount: state.productList.length,
                     separatorBuilder: (context, index) => const SizedBox(
                       height: 10,
                     ),
