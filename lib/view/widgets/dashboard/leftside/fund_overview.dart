@@ -61,10 +61,10 @@ class _Fund_overviewState extends State<Fund_overview> {
                     textAlign: TextAlign.center,
                   )
                 : const SizedBox(
-                    height: 10,
-                    width: 10,
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
+                    height: 15,
+                    width: 20,
+                    child: LinearProgressIndicator(
+                      color: primaryColor,
                     ),
                   ),
           ),

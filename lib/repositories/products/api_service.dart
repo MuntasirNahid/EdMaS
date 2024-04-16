@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:edmas/global/global.dart';
@@ -149,6 +150,124 @@ class ProductApiService {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       },
+    );
+  }
+
+  Future<http.Response> addIncomeOrExpense({
+    required String type,
+    required String amount,
+    required String details,
+  }) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    Uri url = Uri.parse(add_income_expense_url);
+
+    return await http.post(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      body: {
+        'amount': amount,
+        'type': type,
+        'details': details,
+      },
+    );
+  }
+
+  Future<http.Response> getAllTransactions() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    Uri url = Uri.parse(get_all_transaction_url);
+
+    return await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+  }
+
+  Future<http.Response> updateProductDetails({
+    required String productId,
+    String? productName,
+    String? productQuantity,
+    String? productShelfId,
+  }) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    Uri url = Uri.parse('$update_product_details_url/$productId');
+
+    var request = http.MultipartRequest('PATCH', url);
+
+    if (productName != null) {
+      request.fields['name'] = productName;
+    }
+
+    if (productQuantity != null) {
+      request.fields['quantity'] = productQuantity;
+    }
+
+    if (productShelfId != null) {
+      request.fields['location'] = productShelfId;
+    }
+
+    request.headers['Content-Type'] = 'application/json; charset=UTF-8';
+    request.headers['Authorization'] = 'Bearer $token';
+
+    //request.files.add(file);
+
+    var response = await request.send();
+
+    return http.Response(response.statusCode.toString(), response.statusCode);
+  }
+
+  Future<http.Response> deleteProduct({
+    required String productId,
+  }) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    Uri url = Uri.parse('$delete_product_url/$productId');
+
+    return await http.delete(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+  }
+
+  Future<http.Response> sendApplication({
+    required String type,
+    required List<Map<String, dynamic>> items,
+    required String body,
+  }) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    Uri url = Uri.parse(send_application_url);
+
+    return await http.post(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: jsonEncode({
+        "applicantId": "fc3d7f1d-1990-4543-a363-fd2ce7f3afbd",
+        "applicationToId": "35269238-726d-4cf8-966c-71b0d2b28fa2",
+        "type": type,
+        "subject": "Request",
+        "body": body,
+        "items": items,
+        "phase": "sent_to_store_manager"
+      }),
     );
   }
 }

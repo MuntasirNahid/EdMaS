@@ -2,6 +2,7 @@ import 'package:edmas/controllers/products/products_controller.dart';
 import 'package:edmas/models/product_model.dart';
 import 'package:edmas/utills/colors.dart';
 import 'package:edmas/view/screens/bloc/dashboard_bloc.dart';
+import 'package:edmas/view/widgets/dashboard/edit_item_dialogue.dart';
 import 'package:edmas/view/widgets/dashboard/leftside/sust_logo_text.dart';
 import 'package:edmas/view/widgets/dashboard/rightside/dashboard_right_side.dart';
 import 'package:edmas/view/widgets/deleteProductDialogue.dart';
@@ -194,7 +195,19 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                     BorderRadius.circular(5),
                                               ),
                                             ),
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return EditItemDialogue(
+                                                      id: product.id,
+                                                      name: product.name,
+                                                      quantity:
+                                                          product.quantity,
+                                                    );
+                                                  });
+                                            },
                                             child: const Text(
                                               'Edit Details',
                                               style: TextStyle(
@@ -211,7 +224,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                 context: context,
                                                 builder:
                                                     (BuildContext context) {
-                                                  return DeleteProductDialogue();
+                                                  return DeleteProductDialogue(
+                                                    productId: product.id,
+                                                  );
                                                 });
                                           },
                                           icon: Icon(

@@ -108,6 +108,8 @@ class AuthRepository {
 
         prefs.setString('user_role', user.role);
         prefs.setString('user_name', user.name);
+        print('user id : ${responseData['id']}');
+        print('user id : ${user.id}');
         print('User Role: ${user.role}');
         print('User Name: ${user.name}');
         print("User Name from shared pref: ${prefs.getString('user_name')}");

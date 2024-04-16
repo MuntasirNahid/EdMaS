@@ -18,6 +18,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+class RequestData {
+  String itemId;
+  int quantity;
+  String requestType;
+  String applicationBody;
+
+  RequestData(
+      {this.itemId = '',
+      this.quantity = 0,
+      this.requestType = '',
+      this.applicationBody = ''});
+}
+
 class LeftSideAll extends StatefulWidget {
   const LeftSideAll({
     super.key,
@@ -34,6 +47,8 @@ class _LeftSideAllState extends State<LeftSideAll> {
   bool _isSearching = false;
   List<ProductModel> _allProducts = [];
   List<ProductModel> _filteredProducts = [];
+
+  final requestData = RequestData();
 
   @override
   void initState() {
@@ -142,7 +157,10 @@ class _LeftSideAllState extends State<LeftSideAll> {
                 ),
 
               ///Request
-              if (state is DashboardRequestState) const RequestItem(),
+              if (state is DashboardRequestState)
+                RequestItem(
+                  requestItem: requestData,
+                ),
 
               ///Approved
               if (state is DashboardApproveState)
@@ -195,10 +213,7 @@ class _LeftSideAllState extends State<LeftSideAll> {
               ),
 
               ///Income List and Income list button
-              if (state is DashboardFundState)
-                IncomeExpenseLog(isExpense: false),
-              if (state is DashboardFundState)
-                IncomeExpenseLog(isExpense: true),
+              if (state is DashboardFundState) IncomeExpenseLog(),
 
               ///Application Approval Overview
 
@@ -208,7 +223,10 @@ class _LeftSideAllState extends State<LeftSideAll> {
               //   if (state is DashboardApprovalState) ApproveRejectButton(),
 
               ///Application FormField
-              if (state is DashboardRequestState) ApplicationFormField(),
+              if (state is DashboardRequestState)
+                ApplicationFormField(
+                  requestData: requestData,
+                ),
 
               ///DashboardItemList Fetching from Db
 
@@ -276,7 +294,10 @@ class _LeftSideAllState extends State<LeftSideAll> {
                 ),
 
               ///Request Button
-              if (state is DashboardRequestState) RequestButton(),
+              if (state is DashboardRequestState)
+                RequestButton(
+                  requestData: requestData,
+                ),
             ],
           ),
         );

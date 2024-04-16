@@ -1,9 +1,28 @@
+import 'package:edmas/controllers/products/products_controller.dart';
+import 'package:edmas/utills/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class DeleteProductDialogue extends StatelessWidget {
+class DeleteProductDialogue extends StatefulWidget {
+  final String productId;
   const DeleteProductDialogue({
     super.key,
+    required this.productId,
   });
+
+  @override
+  State<DeleteProductDialogue> createState() => _DeleteProductDialogueState();
+}
+
+class _DeleteProductDialogueState extends State<DeleteProductDialogue> {
+  String message = "Product Deleted";
+  Future<String> deleteProduct() async {
+    message = await ProductsController().deleteProduct(
+      productId: widget.productId,
+    );
+
+    return message;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +78,9 @@ class DeleteProductDialogue extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey,
                     foregroundColor: Colors.white,
@@ -79,7 +100,19 @@ class DeleteProductDialogue extends StatelessWidget {
                   width: 20,
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await deleteProduct();
+                    Fluttertoast.showToast(
+                      msg: message,
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 4,
+                      backgroundColor: primaryColor,
+                      textColor: Colors.white,
+                      fontSize: 16.0,
+                    );
+                    Navigator.pop(context);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,

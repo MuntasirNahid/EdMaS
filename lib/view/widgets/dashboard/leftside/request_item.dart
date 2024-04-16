@@ -1,8 +1,11 @@
+import 'package:edmas/controllers/products/products_controller.dart';
+import 'package:edmas/models/product_model.dart';
+import 'package:edmas/view/widgets/dashboard/leftside/dashboard_left_side.dart';
 import 'package:flutter/material.dart';
 
 class RequestItem extends StatefulWidget {
-  const RequestItem({super.key});
-
+  const RequestItem({super.key, required this.requestItem});
+  final RequestData requestItem;
   @override
   State<RequestItem> createState() => _RequestItemState();
 }
@@ -11,10 +14,42 @@ class _RequestItemState extends State<RequestItem> {
   String _dropDownType = "type";
   String _dropDownProcut = "select";
 
+  @override
+  void initState() {
+    fetchProducts();
+    // TODO: implement initState
+    super.initState();
+  }
+
   void dropDownCallback(String? newValue) {
     setState(() {
       _dropDownType = newValue!;
+      widget.requestItem.requestType = newValue;
     });
+  }
+
+  bool isLoading = false;
+
+  List<ProductModel> products = [];
+  ProductModel? selectedProduct;
+  var selectedProductName = '';
+  var selectedProductId = '';
+
+  void fetchProducts() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      products = await ProductsController().fetchProductList();
+      setState(() {
+        isLoading = false;
+        selectedProductName = products[0].name;
+        selectedProductId = products[0].id;
+        selectedProduct = products[0];
+      });
+    } catch (error) {
+      // Handle error
+    }
   }
 
   @override
@@ -45,7 +80,7 @@ class _RequestItemState extends State<RequestItem> {
               horizontal: 20,
             ),
             child: Text(
-              "Date: 31/12/2023",
+              "Date: ${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.w600,
@@ -81,12 +116,12 @@ class _RequestItemState extends State<RequestItem> {
                   child: Text("Request Type"),
                 ),
                 DropdownMenuItem(
-                  value: "approval",
-                  child: Text("Approval"),
+                  value: "give",
+                  child: Text("Give"),
                 ),
                 DropdownMenuItem(
-                  value: "return",
-                  child: Text("Return"),
+                  value: "take",
+                  child: Text("Take"),
                 ),
               ],
               onChanged: dropDownCallback,
@@ -113,33 +148,29 @@ class _RequestItemState extends State<RequestItem> {
           height: 50,
           width: 240,
           child: Center(
-            child: DropdownButton(
-              underline: Container(),
-              items: const [
-                DropdownMenuItem(
-                  value: "select",
-                  child: Text("Select Product"),
-                ),
-                DropdownMenuItem(
-                  value: "RAM8",
-                  child: Text("8 Gb RAM"),
-                ),
-                DropdownMenuItem(
-                  value: "RAM2",
-                  child: Text("2 Gb RAM"),
-                ),
-                DropdownMenuItem(
-                  value: "RAM4",
-                  child: Text("4 Gb RAM"),
-                ),
-              ],
-              onChanged: (String? newValue) {
+            child: DropdownButton<ProductModel>(
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              items: products.map((ProductModel product) {
+                return DropdownMenuItem<ProductModel>(
+                  value: product,
+                  child: Text(product.name),
+                );
+              }).toList(),
+              value: selectedProduct,
+              onChanged: (ProductModel? newValue) {
                 setState(() {
-                  _dropDownProcut = newValue!;
+                  selectedProductName = newValue!.name;
+                  selectedProductId = newValue.id;
+                  selectedProduct = newValue;
+                  widget.requestItem.itemId = selectedProductId;
+                  // _logger.debug(
+                  //     'selected shelf id: $selectedShelfId');
                 });
               },
-              value: _dropDownProcut,
-              isExpanded: false,
+              isExpanded: true,
+              borderRadius: BorderRadius.circular(5),
+              underline: Container(),
+              focusColor: Colors.transparent,
             ),
           ),
         ),
@@ -161,6 +192,11 @@ class _RequestItemState extends State<RequestItem> {
             ],
           ),
           child: TextFormField(
+            onChanged: (value) {
+              setState(() {
+                widget.requestItem.quantity = int.parse(value);
+              });
+            },
             decoration: InputDecoration(
               hintText: "Quantity",
               hintStyle: TextStyle(
