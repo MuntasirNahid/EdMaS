@@ -3,8 +3,10 @@ import 'package:edmas/view/widgets/dashboard/leftside/Dialogue_Add_New_Item/AddN
 import 'package:flutter/material.dart';
 
 class SearchItemAndAddNewItem extends StatelessWidget {
+  final Function(String) onSearchChanged;
   const SearchItemAndAddNewItem({
     super.key,
+    required this.onSearchChanged,
   });
 
   @override
@@ -52,6 +54,7 @@ class SearchItemAndAddNewItem extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
+                      onChanged: onSearchChanged,
                       decoration: InputDecoration(
                         hintText: 'Search essential items',
                         hintStyle: TextStyle(

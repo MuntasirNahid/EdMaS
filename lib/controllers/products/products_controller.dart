@@ -135,6 +135,21 @@ class ProductsController {
       return Future.error(exception);
     }
   }
+
+  Future<double> getCurrentBalance() {
+    return ProductApiService().getCurrentBalance().then((response) {
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body);
+        _logger.success("Current Balance fetched successfully");
+        var jsonData = jsonResponse['data'];
+        return jsonData['balance'];
+      } else {
+        _logger.error(
+            'Failed to fetch current balance,status code: ${response.statusCode} ');
+        return Future.error('Failed to fetch current balance');
+      }
+    });
+  }
 }
 
 // List<ProductModel> productsList = [];

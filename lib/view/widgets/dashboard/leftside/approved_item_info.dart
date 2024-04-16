@@ -27,7 +27,7 @@ class _ApprovedItemInfoState extends State<ApprovedItemInfo> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.isApproval!
+      onTap: widget.isApproval != null
           ? () {
               showDialog(
                   context: context,

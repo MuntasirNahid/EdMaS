@@ -1,3 +1,5 @@
+import 'package:edmas/controllers/products/products_controller.dart';
+import 'package:edmas/models/product_model.dart';
 import 'package:edmas/view/screens/bloc/dashboard_bloc.dart';
 import 'package:edmas/view/screens/product_details.dart';
 import 'package:edmas/view/widgets/dashboard/leftside/add_amount_expense.dart';
@@ -29,13 +31,18 @@ class _LeftSideAllState extends State<LeftSideAll> {
   bool isProductsLoaded = false;
   final DashboardBloc dashboardBloc = DashboardBloc();
 
+  bool _isSearching = false;
+  List<ProductModel> _allProducts = [];
+  List<ProductModel> _filteredProducts = [];
+
   @override
   void initState() {
     //  dashboardBloc.add(DashboardItemListEvent());
     BlocProvider.of<DashboardBloc>(context).add(
       DashboardItemListEvent(),
     );
-    //  fetchProducts();
+
+    fetchProducts();
     initThings();
     super.initState();
   }
@@ -50,6 +57,28 @@ class _LeftSideAllState extends State<LeftSideAll> {
   //     isProductsLoaded = true;
   //   });
   // }
+
+  Future<void> fetchProducts() async {
+    try {
+      List<ProductModel> products =
+          await ProductsController().fetchProductList();
+      setState(() {
+        _allProducts = products;
+        _filteredProducts = products;
+      });
+    } catch (error) {
+      // Handle error
+    }
+  }
+
+  void _filterProducts(String query) {
+    setState(() {
+      _filteredProducts = _allProducts
+          .where((product) =>
+              product.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
 
   String userRole = "";
   void initThings() async {
@@ -98,7 +127,19 @@ class _LeftSideAllState extends State<LeftSideAll> {
               ///Search Item and Add new item
               if ((userRole == "store_manager" || userRole == "dept_head") &&
                   state is DashboardItemListState)
-                const SearchItemAndAddNewItem(),
+                SearchItemAndAddNewItem(
+                  onSearchChanged: (query) {
+                    if (query.isNotEmpty) {
+                      _isSearching = true;
+                      _filterProducts(query);
+                    } else {
+                      _isSearching = false;
+                      setState(() {
+                        _filteredProducts = _allProducts;
+                      });
+                    }
+                  },
+                ),
 
               ///Request
               if (state is DashboardRequestState) const RequestItem(),
@@ -131,7 +172,7 @@ class _LeftSideAllState extends State<LeftSideAll> {
                 ),
 
               const SizedBox(
-                height: 30,
+                height: 25,
               ),
 
               ///Add Amount and Expenses Container
@@ -150,7 +191,7 @@ class _LeftSideAllState extends State<LeftSideAll> {
                 ),
 
               const SizedBox(
-                height: 15,
+                height: 10,
               ),
 
               ///Income List and Income list button
@@ -203,22 +244,31 @@ class _LeftSideAllState extends State<LeftSideAll> {
                 Expanded(
                   child: ListView.separated(
                     itemBuilder: (context, index) {
+                      ProductModel product = _isSearching
+                          ? _filteredProducts[index]
+                          : _allProducts[index];
                       return TableElements(
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => ProductDetailsScreen(
-                                productId: state.productList[index].id,
+                                //  productId: state.productList[index].id,
+                                productId: product.id,
                               ),
                             ),
                           );
                         },
                         id: index + 1,
-                        productName: state.productList[index].name,
-                        quantity: state.productList[index].quantity,
+                        // productName: state.productList[index].name,
+                        // quantity: state.productList[index].quantity,
+                        productName: product.name,
+                        quantity: product.quantity,
                       );
                     },
-                    itemCount: state.productList.length,
+                    // itemCount: state.productList.length,
+                    itemCount: _isSearching
+                        ? _filteredProducts.length
+                        : _allProducts.length,
                     separatorBuilder: (context, index) => const SizedBox(
                       height: 10,
                     ),

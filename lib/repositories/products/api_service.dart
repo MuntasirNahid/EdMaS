@@ -136,4 +136,19 @@ class ProductApiService {
       },
     );
   }
+
+  Future<http.Response> getCurrentBalance() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    Uri url = Uri.parse(get_curr_balance);
+
+    return await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+  }
 }

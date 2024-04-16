@@ -5,3 +5,4 @@ const fetch_products_url = '${base_url}/product/get-all';
 const add_products_url = '${base_url}/product/create';
 const all_shelf_url = '${base_url}/shelf/get-all';
 const single_product_details_url = '${base_url}/product/get-by-id';
+const get_curr_balance = '${base_url}/accounts/get-current-balance';

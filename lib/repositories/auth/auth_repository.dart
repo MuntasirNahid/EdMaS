@@ -107,7 +107,10 @@ class AuthRepository {
         prefs.setString('token', jsonDecode(response.body)['token']);
 
         prefs.setString('user_role', user.role);
+        prefs.setString('user_name', user.name);
         print('User Role: ${user.role}');
+        print('User Name: ${user.name}');
+        print("User Name from shared pref: ${prefs.getString('user_name')}");
         print('Token: ${jsonDecode(response.body)['token']}');
         return 'success';
       } else {
