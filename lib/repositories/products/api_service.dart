@@ -270,4 +270,19 @@ class ProductApiService {
       }),
     );
   }
+
+  Future<http.Response> getApplicationByApplicantId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    Uri url = Uri.parse(
+        '$get_application_by_applicantid_url?applicant=fc3d7f1d-1990-4543-a363-fd2ce7f3afbd');
+    return await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+  }
 }

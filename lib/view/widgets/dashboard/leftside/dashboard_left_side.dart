@@ -267,14 +267,17 @@ class _LeftSideAllState extends State<LeftSideAll> {
                           : _allProducts[index];
                       return TableElements(
                         onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => ProductDetailsScreen(
-                                //  productId: state.productList[index].id,
-                                productId: product.id,
+                          if ((userRole == "store_manager" ||
+                              userRole == "dept_head")) {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ProductDetailsScreen(
+                                  //  productId: state.productList[index].id,
+                                  productId: product.id,
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                          }
                         },
                         id: index + 1,
                         // productName: state.productList[index].name,

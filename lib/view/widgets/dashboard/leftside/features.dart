@@ -14,6 +14,7 @@ class Features extends StatefulWidget {
 }
 
 class _FeaturesState extends State<Features> {
+  int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Container(

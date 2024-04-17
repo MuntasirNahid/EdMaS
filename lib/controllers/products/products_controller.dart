@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:edmas/models/application_model.dart';
 import 'package:edmas/models/location_model.dart';
 import 'package:edmas/models/product_model.dart';
 import 'package:edmas/models/transaction_model.dart';
@@ -258,6 +259,38 @@ class ProductsController {
         _logger.error(
             'Failed to create application,status code: ${response.statusCode} ');
         return Future.error('Failed to create application');
+      }
+    });
+  }
+
+  Future<List<ApplicationModel>> getApplicationByApplicantId() async {
+    return ProductApiService().getApplicationByApplicantId().then((response) {
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body);
+        _logger.success("All application fetched successfully");
+        var jsonData = jsonResponse['data'];
+
+        List<ApplicationModel> applications = [];
+
+        for (var applicationData in jsonData) {
+          String status = applicationData['status'];
+          String phase = applicationData['phase'];
+          int quantity = applicationData['quantity'] != null
+              ? jsonDecode(applicationData['quantity'])[0]['quantity']
+              : 0; // Default to 0 if quantity is null or empty
+          String itemName = applicationData['items'][0]['name'];
+          applications.add(ApplicationModel(
+            status: status,
+            phase: phase,
+            quantity: quantity,
+            item: itemName,
+          ));
+        }
+        return applications;
+      } else {
+        _logger.error(
+            'Failed to fetch all application,status code: ${response.statusCode} ');
+        return Future.error('Failed to fetch all application');
       }
     });
   }
