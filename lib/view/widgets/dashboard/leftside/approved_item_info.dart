@@ -114,7 +114,7 @@ class _ApprovedItemInfoState extends State<ApprovedItemInfo> {
       isLoading = false;
     });
     print(userRole);
-    if (userRole == "store_manager") {
+    if (userRole == "store_manager" || userRole == 'dept_head') {
       getAllApplication();
     }
   }
