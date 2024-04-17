@@ -327,7 +327,7 @@ class _ApprovedItemInfoState extends State<ApprovedItemInfo> {
         var s = data['quantity'].split(':');
         var quantity = s[2].split('}')[0];
 
-       if(userRole == 'dept_head' && data['phase']=='approved_by_store_manager'){
+       if(userRole == 'dept_head' && widget.isApproved==null && data['phase']=='approved_by_store_manager'){
          applicationsSunny.add(ApplicationModelSunny(
             id: data['id'],
             applicantId: data['applicantId'],
@@ -346,9 +346,29 @@ class _ApprovedItemInfoState extends State<ApprovedItemInfo> {
             applicationToEmail: data['applicationTo']['email'],
             items: []));
        }
-       else if(userRole == 'dept_head'){
+       else if(userRole == 'dept_head' && widget.isApproved!=null && data['phase']=='approved_by_head'){
+            applicationsSunny.add(ApplicationModelSunny(
+            id: data['id'],
+            applicantId: data['applicantId'],
+            applicationToId: data['applicationToId'],
+            type: data['type'],
+            subject: data['subject'],
+            body: data['body'],
+            status: data['status'],
+            phase: data['phase'],
+            quantity: quantity.toString(),
+            productName: data['items'][0]['name'],
+            productId: data['items'][0]['id'],
+            applicantName: data['applicant']['name'],
+            applicantEmail: data['applicant']['email'],
+            applicationToName: data['applicationTo']['name'],
+            applicationToEmail: data['applicationTo']['email'],
+            items: []));
+       }
+       else if(userRole=="dept_head"){
         continue;
        }
+       
        else{
           applicationsSunny.add(ApplicationModelSunny(
             id: data['id'],
