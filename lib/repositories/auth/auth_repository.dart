@@ -1,10 +1,11 @@
 import 'dart:convert';
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:edmas/global/global.dart';
 import 'package:edmas/models/user_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepository {
   var client = http.Client();
@@ -12,7 +13,7 @@ class AuthRepository {
   Future<String> signUpUser({
     required UserModel userModel,
     required String confirmPassword,
-    required File dp,
+    required Uint8List dp,
     required String imageExtension,
   }) async {
     try {
@@ -31,33 +32,39 @@ class AuthRepository {
       // );
       var uri = Uri.parse(register_url);
 
-      ///edi shob korte hoitese karon postman a raw type na. form-data type.erliga
+      ///egula shob korte hoitese karon postman a raw type na. form-data type.
       var request = http.MultipartRequest('POST', uri);
 
       request.fields['name'] = userModel.name;
       request.fields['email'] = userModel.email;
       request.fields['role'] = userModel.role;
-      request.fields['about'] = userModel.about;
+
       request.fields['password'] = userModel.password;
       request.fields['confirmPassword'] = confirmPassword;
 
-      // var file = http.MultipartFile.fromBytes(
-      //   'dp',
-      //   dp,
-      //   filename: 'user_dp.${userModel.dpExtension}',
-      //   contentType: MediaType('image', userModel.dpExtension),
-      // );
-      var file = await http.MultipartFile.fromPath(
+      var file = http.MultipartFile.fromBytes(
         'dp',
-        dp.path,
+        dp,
         filename: '${userModel.name}_dp.$imageExtension',
         contentType: MediaType('image', imageExtension),
       );
+
       request.files.add(file);
 
       //request.files.add(file);
 
       var response = await request.send();
+      // final responseData = await response.stream.bytesToString();
+      //
+      // final decodeResponse = jsonDecode(responseData);
+      // print('printing decode response');
+      //
+      // print(decodeResponse['data'].toString());
+      //
+      // final user = UserModel.fromMap(decodeResponse['data']);
+      //
+      // print(user.name);
+      // print(user.id);
 
       print('{Hello we got status code: ${response.statusCode}}');
 
@@ -73,6 +80,43 @@ class AuthRepository {
         var errorData = await response.stream.bytesToString();
         print('Error Response: $errorData');
         return 'An Error Occurred while registering user';
+      }
+    } catch (e) {
+      print('An Error Occurred and Api call failed, e = ${e.toString()}');
+      return 'An Error Occurred and Api call failed, e = ${e.toString()}';
+    }
+  }
+
+  Future<String> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await client.post(
+        Uri.parse(login_url),
+        body: {
+          'email': email,
+          'password': password,
+        },
+      );
+      if (response.statusCode == 200) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        final responseData = jsonDecode(response.body);
+        final user = UserModel.fromMap(responseData['data']);
+        prefs.setString('token', jsonDecode(response.body)['token']);
+
+        prefs.setString('user_role', user.role);
+        prefs.setString('user_name', user.name);
+        print('user id : ${responseData['id']}');
+        print('user id : ${user.id}');
+        print('User Role: ${user.role}');
+        print('User Name: ${user.name}');
+        print("User Name from shared pref: ${prefs.getString('user_name')}");
+        print('Token: ${jsonDecode(response.body)['token']}');
+        return 'success';
+      } else {
+        return 'An Error Occurred while logging in';
       }
     } catch (e) {
       return 'An Error Occurred and Api call failed, e = ${e.toString()}';

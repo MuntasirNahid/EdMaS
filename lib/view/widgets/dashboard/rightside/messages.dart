@@ -20,7 +20,7 @@ class Messages extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(12, 8, 9, 9),
           child: Text(
-            'Johir sir apnare room a dakche. taratari ashen nahole cakri not.QUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIICCKKKKKKK',
+            'Meet me at 10 am',
             style: TextStyle(
               color: Colors.white,
               fontSize: 18,

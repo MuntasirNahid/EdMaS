@@ -1,6 +1,6 @@
+import 'package:edmas/controllers/auth/login_controller.dart';
 import 'package:edmas/utills/colors.dart';
 import 'package:edmas/view/screens/dashboard.dart';
-import 'package:edmas/view/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -19,6 +19,36 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isLoginHovered = false;
   bool isForgotPassHovered = false;
   bool isSignupHovered = false;
+
+  void login() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await LoginController().loginUser(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+    if (res == 'success') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(res),
+        ),
+      );
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) {
+            return const DashBoard();
+          },
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(res),
+        ),
+      );
+    }
+  }
 
   @override
   void dispose() {
@@ -71,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Container(
                 width: 484,
-                height: 369,
+                height: 300,
                 decoration: ShapeDecoration(
                   color: primaryColor,
                   shape: RoundedRectangleBorder(
@@ -238,13 +268,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           isLoginHovered = false;
                         }),
                         child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => const DashBoard(),
-                              ),
-                            );
-                          },
+                          onTap: login,
                           child: Center(
                             child: Container(
                               width: 169,
@@ -261,78 +285,17 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               child: Align(
                                 alignment: Alignment.center,
-                                child: Text(
-                                  'Log in',
-                                  style: TextStyle(
-                                    color: Color(0xFF6F6F6F),
-                                    fontSize: 16,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      MouseRegion(
-                        onEnter: (_) => setState(() {
-                          isForgotPassHovered = true;
-                        }),
-                        onExit: (_) => setState(() {
-                          isForgotPassHovered = false;
-                        }),
-                        child: InkWell(
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Forgot your password?',
-                              style: TextStyle(
-                                color: isForgotPassHovered
-                                    ? Colors.grey.shade400
-                                    : Colors.white,
-                                fontSize: 16,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 13,
-                      ),
-                      MouseRegion(
-                        onEnter: (_) => setState(() {
-                          isSignupHovered = true;
-                        }),
-                        onExit: (_) => setState(() {
-                          isSignupHovered = false;
-                        }),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return const SignupScreen();
-                                },
-                              ),
-                            );
-                          },
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Don\'t have an account? Signup',
-                              style: TextStyle(
-                                color: isSignupHovered
-                                    ? Colors.grey.shade400
-                                    : Colors.white,
-                                fontSize: 16,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w600,
+                                child: _isLoading
+                                    ? CircularProgressIndicator()
+                                    : Text(
+                                        'Log in',
+                                        style: TextStyle(
+                                          color: Color(0xFF6F6F6F),
+                                          fontSize: 16,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
                               ),
                             ),
                           ),
@@ -342,10 +305,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              Flexible(
-                flex: 1,
-                child: Container(),
-              ),
+              // Flexible(
+              //   flex: 1,
+              //   child: Container(),
+              // ),
             ],
           ),
         ),

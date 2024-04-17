@@ -11,14 +11,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AddNewItemDialogue extends StatefulWidget {
-  const AddNewItemDialogue({super.key});
+class EditItemDialogue extends StatefulWidget {
+  final String id;
+  final String name;
+  final int quantity;
+  const EditItemDialogue({
+    super.key,
+    required this.id,
+    required this.name,
+    required this.quantity,
+  });
 
   @override
-  State<AddNewItemDialogue> createState() => _AddNewItemDialogueState();
+  State<EditItemDialogue> createState() => _EditItemDialogueState();
 }
 
-class _AddNewItemDialogueState extends State<AddNewItemDialogue> {
+class _EditItemDialogueState extends State<EditItemDialogue> {
   final DashboardBloc dashboardBloc = DashboardBloc();
 
   // Uint8List image = Uint8List(0);
@@ -54,14 +62,25 @@ class _AddNewItemDialogueState extends State<AddNewItemDialogue> {
 
   LocationModel? selectedShelf;
 
+  late TextEditingController productNameController;
+  late TextEditingController productQuantityController;
   @override
   void initState() {
     // TODO: implement initState
+    productNameController = TextEditingController(
+      text: widget.name,
+    );
+
+    productQuantityController = TextEditingController(
+      text: widget.quantity.toString(),
+    );
     super.initState();
     getAllShelf();
   }
 
   bool isLoaded = false;
+
+  bool isUpdateCompleted = false;
 
   void getAllShelf() async {
     // final dashboardBloc = BlocProvider.of<DashboardBloc>(context);
@@ -75,13 +94,26 @@ class _AddNewItemDialogueState extends State<AddNewItemDialogue> {
     });
   }
 
+  String message = "Item Updated";
+  Future<String> updateProductDetails() async {
+    setState(() {
+      isUpdateCompleted = true;
+    });
+    message = await ProductsController().updateProductDetails(
+      productId: widget.id,
+      productName: productNameController.text,
+      location: selectedShelfId,
+      quantity: productQuantityController.text,
+    );
+    setState(() {
+      isUpdateCompleted = false;
+    });
+    return message;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Logger _logger = Logger.getLogger((AddNewItemDialogue).toString());
-    final TextEditingController productNameController = TextEditingController();
-
-    final TextEditingController productQuantityController =
-        TextEditingController();
+    final Logger _logger = Logger.getLogger((EditItemDialogue).toString());
 
     //_logger.debug('Shelf List: ${shelfList[1].shelfNum}');
 
@@ -152,7 +184,7 @@ class _AddNewItemDialogueState extends State<AddNewItemDialogue> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  'Add New Items',
+                                  'Edit Item',
                                   style: TextStyle(
                                     fontSize: 32.0,
                                     fontWeight: FontWeight.bold,
@@ -314,22 +346,16 @@ class _AddNewItemDialogueState extends State<AddNewItemDialogue> {
                         height: 40,
                         width: 545,
                         child: ElevatedButton(
-                          onPressed: () {
-                            dashboardBloc.add(
-                              DashboardAddNewItemEvent(
-                                _image,
-                                itemName: productNameController.text,
-                                location: selectedShelfId,
-                                itemQuantity: productQuantityController.text,
-                              ),
-                            );
+                          onPressed: () async {
                             // ScaffoldMessenger.of(context).showSnackBar(
                             //   SnackBar(
                             //     content: Text("Item Added Successfully"),
                             //   ),
                             // );
+                            await updateProductDetails();
+
                             Fluttertoast.showToast(
-                              msg: "Item Added Successfully",
+                              msg: message,
                               toastLength: Toast.LENGTH_LONG,
                               gravity: ToastGravity.TOP_RIGHT,
                               timeInSecForIosWeb: 4,
@@ -348,12 +374,16 @@ class _AddNewItemDialogueState extends State<AddNewItemDialogue> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: Center(
-                            child: Text(
-                              'Submit',
-                              style: TextStyle(fontSize: 24),
-                            ),
-                          ),
+                          child: isUpdateCompleted
+                              ? LinearProgressIndicator(
+                                  color: primaryColor,
+                                )
+                              : Center(
+                                  child: Text(
+                                    'Update',
+                                    style: TextStyle(fontSize: 24),
+                                  ),
+                                ),
                         ),
                       ),
                       const SizedBox(
