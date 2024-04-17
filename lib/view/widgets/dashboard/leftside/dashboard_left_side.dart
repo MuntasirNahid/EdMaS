@@ -179,7 +179,9 @@ class _LeftSideAllState extends State<LeftSideAll> {
                 const ApprovedItemInfo(isReplacement: true),
 
               ///Fund Overview
-              if (state is DashboardFundState) const Fund_overview(),
+              if ((userRole == "store_manager" || userRole == "dept_head") &&
+                  state is DashboardFundState)
+                const Fund_overview(),
 
               ///Approval Info
               //   if (state is DashboardApprovalState) const ApprovalItemInfo(),
@@ -194,7 +196,9 @@ class _LeftSideAllState extends State<LeftSideAll> {
               ),
 
               ///Add Amount and Expenses Container
-              if (state is DashboardFundState) AddExpenseAmount(),
+              if ((userRole == "store_manager" || userRole == "dept_head") &&
+                  state is DashboardFundState)
+                AddExpenseAmount(),
 
               ///Title's of table
               if ((userRole == "store_manager" || userRole == "dept_head") &&
@@ -213,7 +217,9 @@ class _LeftSideAllState extends State<LeftSideAll> {
               ),
 
               ///Income List and Income list button
-              if (state is DashboardFundState) IncomeExpenseLog(),
+              if ((userRole == "store_manager" || userRole == "dept_head") &&
+                  state is DashboardFundState)
+                IncomeExpenseLog(),
 
               ///Application Approval Overview
 

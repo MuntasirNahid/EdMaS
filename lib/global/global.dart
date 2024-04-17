@@ -14,3 +14,6 @@ const update_product_details_url = '${base_url}/product/update';
 const delete_product_url = '${base_url}/product/delete';
 const send_application_url = '${base_url}/application/create';
 const get_application_by_applicantid_url = '${base_url}/application/get-all';
+const update_application_status =
+    "https://edmas-server.onrender.com/api/v1/application/update";
+const fetch_all_application_url = '${base_url}/application/get-all';
