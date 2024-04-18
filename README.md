@@ -12,6 +12,11 @@ Welcome to the EDMAS (Efficient Department Management Website) Flutter project r
 - **Replacements**: Process replacements for damaged items.
 - **Fund Management**: Track funds related to departmental activities.
 
+## Video Presentation
+<a href="https://youtu.be/fUr45G7qPgE">
+Youtube
+</a>
+
 ## Installation
 
 To run EDMAS on your local machine, follow these steps:
