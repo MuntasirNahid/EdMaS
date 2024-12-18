@@ -1,6 +1,14 @@
 # EDMAS - Efficient Department Management Website
 
-Welcome to the EDMAS (Efficient Department Management Website) Flutter project repository! EDMAS is a comprehensive solution for managing various aspects of departmental tasks efficiently. Whether it's managing inventory, handling requests, approvals, returns, damages, replacements, or tracking funds, EDMAS provides a user-friendly interface to streamline departmental operations.
+Welcome to the EDMAS (Efficient Department Management Website) Flutter project repository!
+
+EDMAS is a comprehensive solution for managing various aspects of departmental tasks efficiently. Whether it's managing inventory, handling requests, approvals, returns, damages, replacements, or tracking funds, EDMAS provides a user-friendly interface to streamline departmental operations.
+
+This project is very special to me, as my team and I developed it entirely from scratch. We worked closely with stakeholders, conducting meeting minutes, gathering and analyzing requirements, and creating essential documentation such as the Business Requirement Specification (BRS) and Software Requirement Specification (SRS). Additionally, we designed the entire system, from conceptualizing the architecture to implementing the final design, ensuring a robust and efficient solution.
+
+Through this project, I gained valuable insights into the software development lifecycle (SDLC), from requirement gathering and system analysis to design, development, testing, and deployment. This hands-on experience not only strengthened my technical skills but also enhanced my ability to collaborate effectively with a team and stakeholders.
+
+
 
 ## Features
 
