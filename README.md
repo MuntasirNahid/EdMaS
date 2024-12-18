@@ -8,6 +8,8 @@ This project is very special to me, as my team and I developed it entirely from 
 
 Through this project, I gained valuable insights into the software development lifecycle (SDLC), from requirement gathering and system analysis to design, development, testing, and deployment. This hands-on experience not only strengthened my technical skills but also enhanced my ability to collaborate effectively with a team and stakeholders.
 
+SDLC FROM SCRATCH :<a href ="https://drive.google.com/drive/folders/1lPZ3vptVFWmkdvVigH9RIu4uQ2YgmCyj?usp=sharing">Drive Link</a>
+
 
 
 ## Features
